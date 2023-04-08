@@ -1,0 +1,10 @@
+@import "@styles/variables.scss";
+
+.wrapper {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  box-shadow: $box-shadow;
+  height: 6rem;
+  margin-top: -6rem;
+}

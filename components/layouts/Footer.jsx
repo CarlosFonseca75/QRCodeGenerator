@@ -1,9 +1,13 @@
 import React from "react";
 
+import styles from "@styles/components/layouts/Footer.module.scss";
+
 export default function Footer() {
   return (
-    <footer>
-      <p>Made with ❤️️ by me!</p>
+    <footer className={styles.wrapper}>
+      <p>
+        <strong>Made with 💙️ by me!</strong>
+      </p>
     </footer>
   );
 }

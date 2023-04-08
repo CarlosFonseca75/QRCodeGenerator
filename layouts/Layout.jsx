@@ -1,14 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-import Navbar from "@components/layouts/Navbar";
 import Footer from "@components/layouts/Footer";
+import styles from "@styles/layouts/Layout.module.scss";
 
 export default function Layout({ children }) {
   return (
     <>
-      <Navbar />
-      <main>{children}</main>
+      <main className={styles.wrapper}>{children}</main>
       <Footer />
     </>
   );

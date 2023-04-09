@@ -22,6 +22,9 @@ export default function Input({
       {/* Label. */}
       <label htmlFor={id}>
         <strong>{label}</strong>
+        {!required && (
+          <span className={styles["optional-message"]}> (optional)</span>
+        )}
       </label>
 
       {/* Input. */}

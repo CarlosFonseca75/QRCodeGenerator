@@ -12,6 +12,6 @@ module.exports = function generateUrlQRCodeUrl(url) {
 
     return qrcodeUrl;
   } catch (e) {
-    console.log(`Error: ${e.message}`);
+    console.error(`Error: ${e.message}`);
   }
 };

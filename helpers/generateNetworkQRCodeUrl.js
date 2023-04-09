@@ -20,6 +20,6 @@ module.exports = function generateNetworkQRCodeUrl(networkInfo) {
 
      return url;
   } catch (e) {
-    console.log(`Error: ${e.message}`);
+    console.error(`Error: ${e.message}`);
   }
 };

@@ -5,6 +5,11 @@ import React, { useState } from "react";
 import Select from "@components/common/Select";
 import Input from "@components/common/Input";
 import PhoneInput from "@components/common/PhoneInput";
+import Button from "@components/common/Button";
+
+// Helpers.
+import generateUrlQRCodeUrl from "@helpers/generateUrlQRCodeUrl";
+import generateNetworkQRCodeUrl from "@helpers/generateNetworkQRCodeUrl";
 
 // Styles.
 import styles from "@styles/components/GenerateCode.module.scss";
@@ -35,19 +40,21 @@ const networkOptions = [
   },
 ];
 
+const defaultData = {
+  type: "url",
+  url: "",
+  networkType: "wpa",
+  networkName: "",
+  networkPassword: "",
+  firstName: "",
+  lastName: "",
+  emails: [""],
+  phoneNumbers: [""],
+};
+
 export default function GenerateCode() {
   // Form data.
-  const [data, setData] = useState({
-    type: "url",
-    url: "",
-    networkType: "",
-    networkName: "",
-    networkPassword: "",
-    firstName: "",
-    lastName: "",
-    emails: [""],
-    phoneNumbers: [""],
-  });
+  const [data, setData] = useState(defaultData);
 
   /**
    * @function
@@ -65,7 +72,7 @@ export default function GenerateCode() {
         [id]: value,
       }));
     } catch (e) {
-      console.log(`Error: ${e.message}`);
+      console.error(`Error: ${e.message}`);
     }
   }
 
@@ -91,7 +98,7 @@ export default function GenerateCode() {
         };
       });
     } catch (e) {
-      console.log(`Error: ${e.message}`);
+      console.error(`Error: ${e.message}`);
     }
   }
 
@@ -112,7 +119,7 @@ export default function GenerateCode() {
         };
       });
     } catch (e) {
-      console.log(`Error: ${e.message}`);
+      console.error(`Error: ${e.message}`);
     }
   }
 
@@ -126,8 +133,9 @@ export default function GenerateCode() {
   function removeEmail(index) {
     try {
       setData((currentData) => {
-        const emails = currentData.emails;
-        delete emails[index];
+        const emails = JSON.parse(JSON.stringify(currentData.emails));
+
+        emails.splice(index, 1);
 
         return {
           ...currentData,
@@ -135,7 +143,7 @@ export default function GenerateCode() {
         };
       });
     } catch (e) {
-      console.log(`Error: ${e.message}`);
+      console.error(`Error: ${e.message}`);
     }
   }
 
@@ -143,17 +151,15 @@ export default function GenerateCode() {
    * @function
    * @name onPhoneChange
    * @description Sets phone numbers when the phone numbers inputs values are changed.
-   * @param {Event}  event - The event object.
-   * @param {number} index - Index of the phone that changed.
+   * @param {string}  phoneNumber - Phone number value.
+   * @param {number}  index - Index of the phone that changed.
    * @returns {void}
    */
-  function onPhoneChange(event, index) {
+  function onPhoneChange(phoneNumber, index) {
     try {
-      const value = event.target.value;
-
       setData((currentData) => {
         const phoneNumbers = currentData.phoneNumbers;
-        phoneNumbers[index] = value;
+        phoneNumbers[index] = phoneNumber;
 
         return {
           ...currentData,
@@ -161,7 +167,7 @@ export default function GenerateCode() {
         };
       });
     } catch (e) {
-      console.log(`Error: ${e.message}`);
+      console.error(`Error: ${e.message}`);
     }
   }
 
@@ -182,7 +188,7 @@ export default function GenerateCode() {
         };
       });
     } catch (e) {
-      console.log(`Error: ${e.message}`);
+      console.error(`Error: ${e.message}`);
     }
   }
 
@@ -196,8 +202,11 @@ export default function GenerateCode() {
   function removePhone(index) {
     try {
       setData((currentData) => {
-        const phoneNumbers = currentData.phoneNumbers;
-        delete phoneNumbers[index];
+        const phoneNumbers = JSON.parse(
+          JSON.stringify(currentData.phoneNumbers)
+        );
+
+        phoneNumbers.splice(index, 1);
 
         return {
           ...currentData,
@@ -205,7 +214,67 @@ export default function GenerateCode() {
         };
       });
     } catch (e) {
-      console.log(`Error: ${e.message}`);
+      console.error(`Error: ${e.message}`);
+    }
+  }
+
+  /**
+   * @function
+   * @description Validates if the form is complete and valid.
+   * @name isFormValidAndComplete
+   * @returns {boolean} Returns true if the form is complete and valid, false otherwise.
+   */
+  function isFormValidAndComplete(data) {
+    try {
+      const {
+        type,
+        url,
+        networkType,
+        networkName,
+        networkPassword,
+        firstName,
+        emails,
+        phoneNumbers,
+      } = data;
+
+      if (type === "url" && url)  return true;
+
+      if (type === "wifi" && networkType && networkName && networkPassword)  return true;
+
+      if (type === "vcard" && firstName && emails?.[0] && phoneNumbers?.[0])  return true;
+
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  /**
+   * @function
+   * @name submit
+   * @description Submits the form and generates the QR code.
+   * @param {Event}  event - The event object.
+   * @returns {void}
+   */
+  function submit(event) {
+    try {
+      event.preventDefault();
+
+      // Validate form.
+      if (!isFormValidAndComplete) return;
+      
+      // Get URL.
+      let url = "";
+
+      if (data.type === "url") url = generateUrlQRCodeUrl(data.url);
+
+      if (data.type === "wifi") url = generateNetworkQRCodeUrl(data);
+
+      // fetch.
+      console.log(`Ready: ${url}`);
+    } catch (e) {
+      console.error(`Error: ${e.message}`);
     }
   }
 
@@ -219,7 +288,11 @@ export default function GenerateCode() {
       </div>
 
       {/* Form. */}
-      <form className={styles.wrapper__form} action="#" method="post">
+      <form
+        aria-label="Generate QR form"
+        className={styles.wrapper__form}
+        onSubmit={submit}
+      >
         <p>
           <strong>Complete the following form:</strong>
         </p>
@@ -328,17 +401,20 @@ export default function GenerateCode() {
                   required
                 />
 
-                {/* Add and remove messages. */}
-                {index === data.emails.length - 1 ? (
-                  <p className={styles["add-message"]} onClick={addEmail}>
-                    + Add email
-                  </p>
-                ) : (
+                {/* Remove message. */}
+                {data.emails.length > 1 && (
                   <p
                     className={styles["remove-message"]}
                     onClick={() => removeEmail(index)}
                   >
                     - Remove email
+                  </p>
+                )}
+
+                {/* Add message. */}
+                {index === data.emails.length - 1 && (
+                  <p className={styles["add-message"]} onClick={addEmail}>
+                    + Add email
                   </p>
                 )}
               </div>
@@ -355,17 +431,20 @@ export default function GenerateCode() {
                   onChange={(event) => onPhoneChange(event, index)}
                 />
 
-                {/* Add and remove messages. */}
-                {index === data.phoneNumbers.length - 1 ? (
-                  <p className={styles["add-message"]} onClick={addPhone}>
-                    + Add phone
-                  </p>
-                ) : (
+                {/* Remove message. */}
+                {data.phoneNumbers.length > 1 && (
                   <p
                     className={styles["remove-message"]}
                     onClick={() => removePhone(index)}
                   >
                     - Remove phone
+                  </p>
+                )}
+
+                {/* Add message. */}
+                {index === data.phoneNumbers.length - 1 && (
+                  <p className={styles["add-message"]} onClick={addPhone}>
+                    + Add phone
                   </p>
                 )}
               </div>
@@ -374,7 +453,12 @@ export default function GenerateCode() {
         )}
 
         {/* Submit. */}
-        
+        <Button
+          text="Generate QR"
+          type="submit"
+          onClick={submit}
+          ariaLabel="Generate QR"
+        />
       </form>
     </section>
   );

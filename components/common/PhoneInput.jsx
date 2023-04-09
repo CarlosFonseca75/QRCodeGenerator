@@ -1,8 +1,11 @@
+// Dependencies.
 import React from "react";
 import PropTypes from "prop-types";
 
+// Components.
 import PhoneNumberInput from "react-phone-number-input";
 
+// Styles.
 import "react-phone-number-input/style.css";
 import styles from "@styles/components/common/PhoneInput.module.scss";
 

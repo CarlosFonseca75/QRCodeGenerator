@@ -1,6 +1,8 @@
+// Dependencies.
 import React from "react";
 import PropTypes from "prop-types";
 
+// Styles.
 import styles from "@styles/components/common/Input.module.scss";
 
 export default function Input({

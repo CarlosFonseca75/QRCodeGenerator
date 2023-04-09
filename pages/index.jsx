@@ -1,6 +1,10 @@
+// Next.
 import Head from "next/head";
 
+// Layout.
 import Layout from "@layouts/Layout";
+
+// Components.
 import GenerateCode from "@components/GenerateCode";
 
 export default function Index() {

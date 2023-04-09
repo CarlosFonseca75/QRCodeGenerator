@@ -1,5 +1,7 @@
+// Dependencies.
 import React from "react";
 
+// Styles.
 import styles from "@styles/components/layouts/Footer.module.scss";
 
 export default function Footer() {

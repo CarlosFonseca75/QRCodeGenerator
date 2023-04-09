@@ -1,6 +1,8 @@
+// Dependencies.
 import React from "react";
 import PropTypes from "prop-types";
 
+// Styles.
 import styles from "@styles/components/common/Select.module.scss";
 
 export default function Select({ id, label, value, onChange, options }) {

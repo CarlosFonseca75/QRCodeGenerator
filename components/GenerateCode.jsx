@@ -1,9 +1,13 @@
+// Dependencies.
 import React, { useState } from "react";
 
-import styles from "@styles/components/GenerateCode.module.scss";
+// Components.
 import Select from "@components/common/Select";
 import Input from "@components/common/Input";
 import PhoneInput from "@components/common/PhoneInput";
+
+// Styles.
+import styles from "@styles/components/GenerateCode.module.scss";
 
 const qrOptions = [
   {

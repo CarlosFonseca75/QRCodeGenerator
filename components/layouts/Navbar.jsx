@@ -1,5 +1,7 @@
+// Dependencies.
 import React from "react";
 
+// Styles.
 import styles from "@styles/components/layouts/Navbar.module.scss";
 
 export default function Navbar() {

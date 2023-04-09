@@ -11,9 +11,7 @@ import styles from "@styles/components/common/PhoneInput.module.scss";
 
 export default function PhoneInput({
   id,
-  type,
   label,
-  name,
   value,
   placeholder,
   onChange,
@@ -31,8 +29,6 @@ export default function PhoneInput({
       {/* Input. */}
       <PhoneNumberInput
         id={id}
-        type={type}
-        name={name}
         value={value}
         placeholder={placeholder}
         onChange={onChange}
@@ -47,9 +43,7 @@ export default function PhoneInput({
 
 PhoneInput.propTypes = {
   id: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
   onChange: PropTypes.func.isRequired,

@@ -12,33 +12,33 @@ import styles from "@styles/components/GenerateCode.module.scss";
 const qrOptions = [
   {
     label: "Standard URL",
-    value: 1,
+    value: "url",
   },
   {
     label: "WiFi login",
-    value: 2,
+    value: "wifi",
   },
   {
     label: "VCard business card",
-    value: 3,
+    value: "vcard",
   },
 ];
 
 const networkOptions = [
   {
     label: "WPA (Wi-Fi Protected Access)",
-    value: "WPA",
+    value: "wpa",
   },
   {
     label: "WEP (Wired Equivalent Privacy)",
-    value: "WEP",
+    value: "wep",
   },
 ];
 
 export default function GenerateCode() {
   // Form data.
   const [data, setData] = useState({
-    type: 0,
+    type: "url",
     url: "",
     networkType: "",
     networkName: "",
@@ -232,133 +232,149 @@ export default function GenerateCode() {
           options={qrOptions}
         />
 
-        <Input
-          id="url"
-          type="text"
-          label="URL:"
-          name="url"
-          value={data.url}
-          placeholder="Enter the website URL, e.g. https://example.com"
-          onChange={onChange}
-          minLength={15}
-          maxLength={100}
-          required
-        />
+        {/* URL fields. */}
+        {data.type === "url" && (
+          <Input
+            id="url"
+            type="text"
+            label="URL:"
+            name="url"
+            value={data.url}
+            placeholder="Enter the website URL, e.g. https://example.com"
+            onChange={onChange}
+            minLength={15}
+            maxLength={100}
+            required
+          />
+        )}
 
-        <Select
-          id="networkType"
-          label="Network type:"
-          value={data.networkType}
-          onChange={onChange}
-          options={networkOptions}
-        />
+        {/* Wifi login fields. */}
+        {data.type === "wifi" && (
+          <>
+            <Select
+              id="networkType"
+              label="Network type:"
+              value={data.networkType}
+              onChange={onChange}
+              options={networkOptions}
+            />
 
-        <Input
-          id="networkName"
-          type="text"
-          label="Network name:"
-          name="networkName"
-          value={data.networkName}
-          placeholder="Enter the Wi-Fi network name"
-          onChange={onChange}
-          minLength={15}
-          maxLength={100}
-          required
-        />
-
-        <Input
-          id="networkPassword"
-          type="password"
-          label="Network password:"
-          name="networkPassword"
-          value={data.networkPassword}
-          placeholder="Enter the Wi-Fi network password"
-          onChange={onChange}
-          minLength={8}
-          maxLength={20}
-          required
-        />
-
-        <Input
-          id="firstName"
-          type="text"
-          label="First name:"
-          name="firstName"
-          value={data.firstName}
-          placeholder="Enter your first name"
-          onChange={onChange}
-          maxLength={20}
-          required
-        />
-
-        <Input
-          id="lastName"
-          type="text"
-          label="Last name:"
-          name="lastName"
-          value={data.lastName}
-          placeholder="Enter your last name"
-          onChange={onChange}
-          maxLength={20}
-        />
-
-        {/* Emails. */}
-        {data.emails.map((email, index) => (
-          <div key={`email-${index}`}>
             <Input
-              id={`email-${index}`}
-              type="email"
-              label="Email address:"
-              name="email"
-              value={email}
-              placeholder="Enter your email address"
-              onChange={(event) => onEmailChange(event, index)}
-              maxLength={50}
+              id="networkName"
+              type="text"
+              label="Network name:"
+              name="networkName"
+              value={data.networkName}
+              placeholder="Enter the Wi-Fi network name"
+              onChange={onChange}
+              minLength={15}
+              maxLength={100}
               required
             />
 
-            {/* Add and remove messages. */}
-            {index === data.emails.length - 1 ? (
-              <p className={styles["add-message"]} onClick={addEmail}>
-                + Add email
-              </p>
-            ) : (
-              <p
-                className={styles["remove-message"]}
-                onClick={() => removeEmail(index)}
-              >
-                - Remove email
-              </p>
-            )}
-          </div>
-        ))}
+            <Input
+              id="networkPassword"
+              type="password"
+              label="Network password:"
+              name="networkPassword"
+              value={data.networkPassword}
+              placeholder="Enter the Wi-Fi network password"
+              onChange={onChange}
+              minLength={8}
+              maxLength={20}
+              required
+            />
+          </>
+        )}
 
-        {/* Phone numbers. */}
-        {data.phoneNumbers.map((phone, index) => (
-          <div key={`phone-${index}`}>
-            <PhoneInput
-              id={`phone-${index}`}
-              label="Phone number:"
-              value={phone}
-              placeholder="Enter your phone number"
-              onChange={(event) => onPhoneChange(event, index)}
+        {/* Wifi login fields. */}
+        {data.type === "vcard" && (
+          <>
+            <Input
+              id="firstName"
+              type="text"
+              label="First name:"
+              name="firstName"
+              value={data.firstName}
+              placeholder="Enter your first name"
+              onChange={onChange}
+              maxLength={20}
+              required
             />
 
-            {/* Add and remove messages. */}
-            {index === data.phoneNumbers.length - 1 ? (
-              <p className={styles["add-message"]} onClick={addPhone}>
-                + Add phone
-              </p>
-            ) : (
-              <p
-                className={styles["remove-message"]}
-                onClick={() => removePhone(index)}
-              >
-                - Remove phone
-              </p>
-            )}
-          </div>
-        ))}
+            <Input
+              id="lastName"
+              type="text"
+              label="Last name:"
+              name="lastName"
+              value={data.lastName}
+              placeholder="Enter your last name"
+              onChange={onChange}
+              maxLength={20}
+            />
+
+            {/* Emails. */}
+            {data.emails.map((email, index) => (
+              <div key={`email-${index}`}>
+                <Input
+                  id={`email-${index}`}
+                  type="email"
+                  label="Email address:"
+                  name="email"
+                  value={email}
+                  placeholder="Enter your email address"
+                  onChange={(event) => onEmailChange(event, index)}
+                  maxLength={50}
+                  required
+                />
+
+                {/* Add and remove messages. */}
+                {index === data.emails.length - 1 ? (
+                  <p className={styles["add-message"]} onClick={addEmail}>
+                    + Add email
+                  </p>
+                ) : (
+                  <p
+                    className={styles["remove-message"]}
+                    onClick={() => removeEmail(index)}
+                  >
+                    - Remove email
+                  </p>
+                )}
+              </div>
+            ))}
+
+            {/* Phone numbers. */}
+            {data.phoneNumbers.map((phone, index) => (
+              <div key={`phone-${index}`}>
+                <PhoneInput
+                  id={`phone-${index}`}
+                  label="Phone number:"
+                  value={phone}
+                  placeholder="Enter your phone number"
+                  onChange={(event) => onPhoneChange(event, index)}
+                />
+
+                {/* Add and remove messages. */}
+                {index === data.phoneNumbers.length - 1 ? (
+                  <p className={styles["add-message"]} onClick={addPhone}>
+                    + Add phone
+                  </p>
+                ) : (
+                  <p
+                    className={styles["remove-message"]}
+                    onClick={() => removePhone(index)}
+                  >
+                    - Remove phone
+                  </p>
+                )}
+              </div>
+            ))}
+          </>
+        )}
+
+        {/* Submit. */}
+        
       </form>
     </section>
   );

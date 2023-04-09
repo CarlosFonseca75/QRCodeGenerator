@@ -76,3 +76,10 @@ export default function Modal({
     ? ReactDom.createPortal(modal, document.getElementById("modal-root"))
     : null;
 }
+
+Modal.propTypes = {
+  showModal: PropTypes.bool.isRequired,
+  setShowModal: PropTypes.func.isRequired,
+  header: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};

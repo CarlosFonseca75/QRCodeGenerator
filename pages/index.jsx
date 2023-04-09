@@ -5,7 +5,7 @@ import Head from "next/head";
 import Layout from "@layouts/Layout";
 
 // Components.
-import GenerateCode from "@components/GenerateCode";
+import GenerateCode from "@components/pages/index/GenerateCode";
 
 export default function Index() {
   return (

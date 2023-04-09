@@ -4,6 +4,7 @@
 .wrapper {
   display: grid;
   justify-items: center;
+  margin-top: 10rem;
 
   &__title {
     text-align: center;
@@ -16,6 +17,13 @@
     gap: 2rem;
     box-shadow: $box-shadow;
     width: 50rem;
+  }
+
+  // Phones styles.
+  @media (max-width: 767px) {
+    &__form {
+      width: 100%;
+    }
   }
 }
 

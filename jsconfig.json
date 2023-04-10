@@ -4,7 +4,8 @@
       "@layouts/*": ["./layouts/*"],
       "@components/*": ["./components/*"],
       "@styles/*": ["./styles/*"],
-      "@helpers/*": ["./helpers/*"]
+      "@helpers/*": ["./helpers/*"],
+      "@pages/*": ["./pages/*"]
     }
   }
 }

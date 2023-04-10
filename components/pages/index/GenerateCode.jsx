@@ -1,5 +1,5 @@
 // Dependencies.
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 // Components.
@@ -150,6 +150,15 @@ export default function GenerateCode() {
       console.error(`Error: ${e.message}`);
     }
   }
+
+  /**
+   * Resets the form error state when new data is received.
+   *
+   * @param {Object} data - The form data object.
+   */
+  useEffect(() => {
+    setFormHasErrors(false);
+  }, [data]);
 
   return (
     <>

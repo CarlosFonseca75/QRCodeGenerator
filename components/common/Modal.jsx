@@ -18,6 +18,7 @@ export default function Modal({
   showModal,
   setShowModal,
   header,
+  onDownload,
   children,
 }) {
   // Flag.
@@ -56,7 +57,7 @@ export default function Modal({
           <Button
             text="Download"
             type="button"
-            onClick={() => console.log("Download")}
+            onClick={onDownload}
             ariaLabel="Dowload QR Code"
           />
 
@@ -81,5 +82,6 @@ Modal.propTypes = {
   showModal: PropTypes.bool.isRequired,
   setShowModal: PropTypes.func.isRequired,
   header: PropTypes.string,
+  onDownload: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };

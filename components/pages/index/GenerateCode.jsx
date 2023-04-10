@@ -159,6 +159,26 @@ export default function GenerateCode() {
   }
 
   /**
+   * @function
+   * @name downloadQRCode
+   * @description Downloads the QR Code.
+   * @returns {void}
+   */
+  function downloadQRCode() {
+    try {
+      // Create anchor element.
+      const link = document.createElement("a");
+      link.href = svg;
+      link.download = "QR_Code.svg";
+
+      // Click to download.
+      link.click();
+    } catch (e) {
+      console.error(`Error: ${e.message}`);
+    }
+  }
+
+  /**
    * Resets the form error state when new data is received.
    *
    * @param {Object} data - The form data object.
@@ -218,6 +238,7 @@ export default function GenerateCode() {
         showModal={showModal}
         setShowModal={setShowModal}
         header={"QR Generated"}
+        onDownload={downloadQRCode}
       >
         <Image src={svg} alt="QR Code" width={200} height={200} />
       </Modal>

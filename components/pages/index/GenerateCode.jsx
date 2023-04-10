@@ -57,6 +57,7 @@ export default function GenerateCode() {
   const [type, setType] = useState("url");
   const [svg, setSvg] = useState("");
   const [formHasErrors, setFormHasErrors] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * @function
@@ -133,6 +134,9 @@ export default function GenerateCode() {
       // Validate form.
       if (!isFormValidAndComplete()) return;
 
+      // Loader.
+      setIsLoading(true);
+
       // Get URL.
       let url = "";
       if (type === "url") url = generateUrlQRCodeUrl(data.url);
@@ -155,6 +159,8 @@ export default function GenerateCode() {
       setShowModal(true);
     } catch (e) {
       console.error(`Error: ${e.message}`);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -229,6 +235,7 @@ export default function GenerateCode() {
             onClick={submit}
             ariaLabel="Generate QR"
             disabled={formHasErrors}
+            loading={isLoading}
           />
         </form>
       </section>

@@ -32,7 +32,7 @@ export default function Select({ id, label, value, onChange, options }) {
 
 Select.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(

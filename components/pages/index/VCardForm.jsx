@@ -5,9 +5,21 @@ import PropTypes from "prop-types";
 // Components.
 import Input from "@components/common/Input";
 import PhoneInput from "@components/common/PhoneInput";
+import Select from "@components/common/Select";
 
 // Styles.
 import styles from "@styles/components/pages/index/VCardForm.module.scss";
+
+const phoneTypeOptions = [
+  {
+    label: "Work",
+    value: "work",
+  },
+  {
+    label: "Home",
+    value: "home",
+  },
+];
 
 export default function VCardForm({ data, setData }) {
   /**
@@ -33,7 +45,7 @@ export default function VCardForm({ data, setData }) {
   /**
    * @function
    * @name onItemChange
-   * @description Sets items when the inputs values are changed.
+   * @description Updates the value of an item at a given index in the emails or phoneNumbers array.
    * @param {Event} value - Item value.
    * @param {"emails" | "phoneNumbers"} type - The type of item to add.
    * @param {number} index - Index of the item that changed.
@@ -44,7 +56,8 @@ export default function VCardForm({ data, setData }) {
       setData((currentData) => {
         const items = JSON.parse(JSON.stringify(currentData[type]));
 
-        items[index] = value;
+        if (type === "emails") items[index] = value;
+        else items[index].number = value;
 
         return {
           ...currentData,
@@ -57,16 +70,21 @@ export default function VCardForm({ data, setData }) {
   }
 
   /**
+   * Adds an empty item to the array to allow for adding more items.
+   *
+   * For "emails", an empty string is added.
+   * For "phoneNumbers", an empty object with default keys is added.
+   *
    * @function
    * @name addItem
    * @param {"emails" | "phoneNumbers"} type - The type of item to add.
-   * @description Adds an empty string to the items array to allow for another item to be added.
    * @returns {void}
    */
   function addItem(type) {
     try {
       setData((currentData) => {
-        const items = currentData[type].concat("");
+        const newItem = type === "emails" ? "" : { phone: "", type: "work" };
+        const items = currentData[type].concat(newItem);
 
         return {
           ...currentData,
@@ -96,6 +114,35 @@ export default function VCardForm({ data, setData }) {
         return {
           ...currentData,
           [type]: items,
+        };
+      });
+    } catch (e) {
+      console.error(`Error: ${e.message}`);
+    }
+  }
+
+  /**
+   * @function
+   * @name onPhoneTypeChange
+   * @description Sets phone type when the inputs values are changed.
+   * @param {Event} event - The event object.
+   * @param {number} index - Index of the phone number that changed.
+   * @returns {void}
+   */
+  function onPhoneTypeChange(event, index) {
+    try {
+      const type = event.target.value;
+
+      setData((currentData) => {
+        const phoneNumbers = JSON.parse(
+          JSON.stringify(currentData.phoneNumbers)
+        );
+
+        phoneNumbers[index].type = type;
+
+        return {
+          ...currentData,
+          phoneNumbers,
         };
       });
     } catch (e) {
@@ -137,7 +184,9 @@ export default function VCardForm({ data, setData }) {
             name="email"
             value={email}
             placeholder="Enter your email address"
-            onChange={(event) => onItemChange(event.target.value, "emails", index)}
+            onChange={(event) =>
+              onItemChange(event.target.value, "emails", index)
+            }
             maxLength={50}
             required
           />
@@ -164,13 +213,22 @@ export default function VCardForm({ data, setData }) {
 
       {data.phoneNumbers.map((phone, index) => (
         <div key={`phone-${index}`}>
-          <PhoneInput
-            id={`phone-${index}`}
-            label="Phone number:"
-            value={phone}
-            placeholder="Enter your phone number"
-            onChange={(value) => onItemChange(value, "phoneNumbers", index)}
-          />
+          <div className={styles["phone-number"]}>
+            <PhoneInput
+              id={`phone-${index}`}
+              label="Phone number:"
+              value={phone.number}
+              placeholder="Enter your phone number"
+              onChange={(value) => onItemChange(value, "phoneNumbers", index)}
+            />
+
+            <Select
+              id={`phone-type-${index}-`}
+              value={phone.type}
+              onChange={(event) => onPhoneTypeChange(event, index)}
+              options={phoneTypeOptions}
+            />
+          </div>
 
           {data.phoneNumbers.length > 1 && (
             <p
@@ -204,7 +262,12 @@ VCardForm.propTypes = {
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired,
     emails: PropTypes.arrayOf(PropTypes.string).isRequired,
-    phoneNumbers: PropTypes.arrayOf(PropTypes.string).isRequired,
+    phoneNumbers: PropTypes.arrayOf(
+      PropTypes.shape({
+        number: PropTypes.string,
+        type: PropTypes.string.isRequired,
+      })
+    ).isRequired,
   }).isRequired,
   setData: PropTypes.func.isRequired,
 };

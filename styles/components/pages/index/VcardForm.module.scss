@@ -15,3 +15,10 @@
   @extend %message;
   color: $danger-color;
 }
+
+.phone-number {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 1rem;
+}

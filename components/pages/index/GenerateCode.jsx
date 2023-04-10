@@ -41,7 +41,12 @@ const defaultData = {
   firstName: "",
   lastName: "",
   emails: [""],
-  phoneNumbers: [""],
+  phoneNumbers: [
+    {
+      number: "",
+      type: "work",
+    },
+  ],
 };
 
 export default function GenerateCode() {
@@ -51,7 +56,7 @@ export default function GenerateCode() {
   const [type, setType] = useState("url");
   const [svg, setSvg] = useState("");
   const [formHasErrors, setFormHasErrors] = useState(false);
-
+console.log(data);
   /**
    * @function
    * @name isFormValidAndComplete
@@ -210,7 +215,7 @@ export default function GenerateCode() {
       <Modal
         showModal={showModal}
         setShowModal={setShowModal}
-        header={"QR Code"}
+        header={"QR Generated"}
       >
         <Image src={svg} alt="QR Code" width={200} height={200} />
       </Modal>

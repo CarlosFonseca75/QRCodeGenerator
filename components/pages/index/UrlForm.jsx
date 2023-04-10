@@ -53,7 +53,12 @@ UrlForm.propTypes = {
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired,
     emails: PropTypes.arrayOf(PropTypes.string).isRequired,
-    phoneNumbers: PropTypes.arrayOf(PropTypes.string).isRequired,
+    phoneNumbers: PropTypes.arrayOf(
+      PropTypes.shape({
+        number: PropTypes.string,
+        type: PropTypes.string.isRequired,
+      })
+    ).isRequired,
   }).isRequired,
   setData: PropTypes.func.isRequired,
 };

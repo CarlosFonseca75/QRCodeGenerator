@@ -12,7 +12,7 @@ module.exports = function generateWifiQRCodeUrl(networkInfo) {
   try {
     const { networkType, networkName, networkPassword } = networkInfo;
 
-    const networkContent = `WIFI:T:${networkType.toUpperCase()};S:${networkName};P:${networkPassword};`;
+    const networkContent = `WIFI:T:${networkType.toUpperCase()};S:${networkName};P:${networkPassword};;`;
 
     const url = `https://2i07qgrgpl.execute-api.us-east-1.amazonaws.com/default/qrcode?content=${encodeURIComponent(
       networkContent

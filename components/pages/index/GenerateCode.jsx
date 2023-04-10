@@ -50,6 +50,7 @@ export default function GenerateCode() {
   const [showModal, setShowModal] = useState(false);
   const [type, setType] = useState("url");
   const [svg, setSvg] = useState("");
+  const [formHasErrors, setFormHasErrors] = useState(false);
 
   /**
    * @function
@@ -76,6 +77,9 @@ export default function GenerateCode() {
 
       if (type === "vcard" && firstName && emails?.[0] && phoneNumbers?.[0])
         return true;
+
+      // Enable error flag.
+      setFormHasErrors(true);
 
       return false;
     } catch (e) {
@@ -188,6 +192,7 @@ export default function GenerateCode() {
             type="submit"
             onClick={submit}
             ariaLabel="Generate QR"
+            disabled={formHasErrors}
           />
         </form>
       </section>

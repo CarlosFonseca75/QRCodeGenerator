@@ -5,10 +5,16 @@ import PropTypes from "prop-types";
 // Styles.
 import styles from "@styles/components/common/Button.module.scss";
 
-export default function Button({ text, type, onClick, ariaLabel }) {
+export default function Button({ text, type, onClick, ariaLabel, disabled }) {
   return (
-    <div className={styles.wrapper}>
-      <button type={type} onClick={onClick} aria-label={ariaLabel}>
+    <div className={`${styles.wrapper} ${disabled && styles.wrapper__disabled}`}>
+      <button
+        type={type}
+        onClick={onClick}
+        aria-label={ariaLabel}
+        disabled={disabled}
+        aria-disabled={disabled}
+      >
         {text}
       </button>
     </div>
@@ -20,4 +26,5 @@ Button.propTypes = {
   type: PropTypes.oneOf(["button", "submit"]),
   onClick: PropTypes.func,
   ariaLabel: PropTypes.string,
+  disabled: PropTypes.bool,
 };

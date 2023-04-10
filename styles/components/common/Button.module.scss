@@ -10,9 +10,15 @@
     background-color: $primary-color;
     color: #fff;
     padding: 0.5em 1em;
+    cursor: pointer;
+  }
 
-    &:hover {
-      cursor: pointer;
+  &__disabled {
+    button {
+      border: thin solid $tertiary-color;
+      background-color: $tertiary-color;
+      color: #dad5d5;
+      cursor: not-allowed;
     }
   }
 }

@@ -12,7 +12,8 @@ import VCardForm from "./VCardForm";
 
 // Helpers.
 import generateUrlQRCodeUrl from "@helpers/generateUrlQRCodeUrl";
-import generateNetworkQRCodeUrl from "@helpers/generateNetworkQRCodeUrl";
+import generateWifiQRCodeUrl from "@helpers/generateWifiQRCodeUrl";
+import generateVCardQRCodeUrl from "@helpers/generateVCardQRCodeUrl";
 import convertSvg from "@helpers/convertSvg";
 
 // Styles.
@@ -56,7 +57,7 @@ export default function GenerateCode() {
   const [type, setType] = useState("url");
   const [svg, setSvg] = useState("");
   const [formHasErrors, setFormHasErrors] = useState(false);
-console.log(data);
+
   /**
    * @function
    * @name isFormValidAndComplete
@@ -135,7 +136,8 @@ console.log(data);
       // Get URL.
       let url = "";
       if (type === "url") url = generateUrlQRCodeUrl(data.url);
-      if (type === "wifi") url = generateNetworkQRCodeUrl(data);
+      if (type === "wifi") url = generateWifiQRCodeUrl(data);
+      if (type === "vcard") url = generateVCardQRCodeUrl(data);
 
       // Make fetch request.
       const svgString = await fetchQRCode(url);

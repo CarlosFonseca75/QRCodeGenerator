@@ -13,6 +13,16 @@ This is a web application that allows users to generate three different types of
 * **HTML:** The standard markup language used to create web pages and applications.
 * **SCSS:** A CSS preprocessor that extends the functionality of CSS with variables, mixins, functions, and more.
 
+## Running tests with jest.
+This project uses Jest, a popular JavaScript testing framework, to ensure the quality and reliability of the code. 
+
+To run the tests, you can use the following command:
+
+```bash
+npm run test
+```
+This command will run all the tests located in the __tests__ directory using Jest. Jest will automatically find and run any files that end with .test.js or .spec.js in this directory.
+
 ## Getting Started.
 To run the application in your browser, run the following commands.
 
